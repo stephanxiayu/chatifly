@@ -1,4 +1,4 @@
-import 'package:chatify/Pages/login_page.dart';
+import 'package:chatify/Screen/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
-      home: LoginPage(),
+      home: const LoginPage(),
     );
   }
 }
