@@ -6,7 +6,13 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: [Image.asset("lib/assets/bild.jpg")]),
+      appBar: AppBar(),
+      body: Stack(children: [
+        Image.asset(
+          "lib/assets/bild.jpg",
+          fit: BoxFit.cover,
+        )
+      ]),
     );
   }
 }

@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:908802048949:android:84f8b5237af7d8e1150ffc",
+        "mobilesdk_app_id": "1:908802048949:android:a87e0db2b9106773150ffc",
         "android_client_info": {
           "package_name": "com.example.chatify"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "908802048949-j8r09ibglhbfkra0tk0k8p2rtkvul49u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatify",
+            "certificate_hash": "05e312409532605df40802176ebfdc08c0ddbda9"
+          }
+        },
         {
           "client_id": "908802048949-d2c71sucok7cussf31q18pr40vdfpjpv.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +37,13 @@
             {
               "client_id": "908802048949-d2c71sucok7cussf31q18pr40vdfpjpv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "908802048949-63cfm97gqa0mds4sk5ufq1bgrrvp8dgq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "ios.example.chatify"
+              }
             }
           ]
         }
