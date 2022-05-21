@@ -10,10 +10,16 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        child: Text("Chat"),
-      ),
+    return Scaffold(
+      body: Stack(children: [
+        Image.asset("lib/assets/bild2.jpg",
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width * 1,
+            height: MediaQuery.of(context).size.height * 1),
+        Container(
+          child: const Center(child: Text("Chat")),
+        ),
+      ]),
     );
   }
 }
