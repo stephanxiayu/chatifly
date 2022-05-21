@@ -27,6 +27,9 @@ class _LoginPageState extends State<LoginPage> {
     UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credatial);
 
+    DocumentSnapshot userExist =
+        await firestore.collection('users').doc(userCredential.user!.uid).get();
+
     await firestore.collection('users').doc(userCredential.user!.uid).set({
       'email': userCredential.user!.email,
       'name': userCredential.user!.displayName,
@@ -43,7 +46,9 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(children: [
         Image.asset("lib/assets/bild.jpg",
-            fit: BoxFit.cover, height: MediaQuery.of(context).size.height * 1),
+            fit: BoxFit.cover,
+            width: MediaQuery.of(context).size.width * 1,
+            height: MediaQuery.of(context).size.height * 1),
         const Center(
           child: Text(
             "Chatify",
