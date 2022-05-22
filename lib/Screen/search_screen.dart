@@ -1,8 +1,11 @@
+import 'package:chatify/Screen/chat_screen.dart';
 import 'package:chatify/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
+  User? user;
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -14,14 +17,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void onSearch() async {
     setState(() {
+      searchResult = [];
       isLoading = true;
     });
     await FirebaseFirestore.instance
         .collection('users')
-        .where('name', isEqualTo: searchController.text)
+        .where('email', isEqualTo: searchController.text)
         .get()
         .then((value) => {
-              if (value.docs.length < 1)
+              if (value.docs.isEmpty)
                 {
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Niemanden gefunden'))),
@@ -30,7 +34,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   }),
                 },
               value.docs.forEach((user) {
-                searchResult.add(user.data());
+                if (user.data()['email'] != widget.user?.email) {
+                  searchResult.add(user.data());
+                }
+              }),
+              setState(() {
+                isLoading = false;
               })
             });
   }
@@ -61,9 +70,47 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: Icon(Icons.search))
+              IconButton(
+                  onPressed: () {
+                    onSearch();
+                  },
+                  icon: Icon(Icons.search))
             ],
-          )
+          ),
+          if (searchResult.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Expanded(
+                  child: ListView.builder(
+                      itemCount: searchResult.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          subtitle: Text(searchResult[index]['email']),
+                          title: Text(searchResult[index]['name']),
+                          leading: CircleAvatar(
+                            child: Image.network(searchResult[index]['image']),
+                          ),
+                          trailing: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreen(
+                                            currentUser: widget.user,
+                                            friendId: searchResult[index]
+                                                ['uid'],
+                                            friendname: searchResult[index]
+                                                ['name'],
+                                            friendImage: searchResult[index]
+                                                ['image'])));
+                              },
+                              icon: Icon(Icons.message)),
+                        );
+                      })),
+            )
+          else if (isLoading == true)
+            const Center(child: CircularProgressIndicator())
         ],
       ),
     );
