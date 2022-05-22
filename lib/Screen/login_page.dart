@@ -1,4 +1,5 @@
 import 'package:chatify/Screen/chat_screen.dart';
+import 'package:chatify/Screen/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,15 +31,20 @@ class _LoginPageState extends State<LoginPage> {
     DocumentSnapshot userExist =
         await firestore.collection('users').doc(userCredential.user!.uid).get();
 
-    await firestore.collection('users').doc(userCredential.user!.uid).set({
-      'email': userCredential.user!.email,
-      'name': userCredential.user!.displayName,
-      'image': userCredential.user!.photoURL,
-      'uid': userCredential.user!.uid,
-      'date': DateTime.now()
-    });
+    if (userExist.exists) {
+      print('user already exist');
+    } else {
+      await firestore.collection('users').doc(userCredential.user!.uid).set({
+        'email': userCredential.user!.email,
+        'name': userCredential.user!.displayName,
+        'image': userCredential.user!.photoURL,
+        'uid': userCredential.user!.uid,
+        'date': DateTime.now()
+      });
+    }
+
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => ChatScreen()));
+        .push(MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   @override
