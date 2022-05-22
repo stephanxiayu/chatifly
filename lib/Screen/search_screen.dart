@@ -80,34 +80,31 @@ class _SearchScreenState extends State<SearchScreen> {
           if (searchResult.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 50),
-              child: Expanded(
-                  child: ListView.builder(
-                      itemCount: searchResult.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          subtitle: Text(searchResult[index]['email']),
-                          title: Text(searchResult[index]['name']),
-                          leading: CircleAvatar(
-                            child: Image.network(searchResult[index]['image']),
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatScreen(
-                                            currentUser: widget.user,
-                                            friendId: searchResult[index]
-                                                ['uid'],
-                                            friendname: searchResult[index]
-                                                ['name'],
-                                            friendImage: searchResult[index]
-                                                ['image'])));
-                              },
-                              icon: Icon(Icons.message)),
-                        );
-                      })),
+              child: ListView.builder(
+                  itemCount: searchResult.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      subtitle: Text(searchResult[index]['email']),
+                      title: Text(searchResult[index]['name']),
+                      leading: CircleAvatar(
+                        child: Image.network(searchResult[index]['image']),
+                      ),
+                      trailing: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                        currentUser: widget.user,
+                                        friendId: searchResult[index]['uid'],
+                                        friendname: searchResult[index]['name'],
+                                        friendImage: searchResult[index]
+                                            ['image'])));
+                          },
+                          icon: Icon(Icons.message)),
+                    );
+                  }),
             )
           else if (isLoading == true)
             const Center(child: CircularProgressIndicator())
