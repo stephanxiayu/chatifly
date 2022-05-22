@@ -48,33 +48,25 @@ class ChatScreen extends StatelessWidget {
                 .doc(currentUser?.uid)
                 .collection('messages')
                 .doc(friendId)
-                .collection(
-                  'chats',
-                )
+                .collection('chats')
                 .orderBy('date', descending: true)
                 .snapshots(),
             builder: (context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data.docs.length < 1) {
-                  const Center(
-                    child: Text("Hi"),
-                  );
-                }
-                return ListView.builder(
-                    itemCount: snapshot.data.docs.length,
-                    reverse: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      bool isMe = snapshot.data.docs[index]['senderId'] ==
-                          currentUser?.uid;
-                      return SingleMessages(
-                          message: snapshot.data.docs[index]['messages'],
-                          isMe: isMe);
-                    });
+              if (!snapshot.hasData) {
+                return const Center(child: Text("ist loading...."));
               }
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  reverse: true,
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  physics: const ScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                        title: Text(
+                      snapshot.data.docs[index]['message'],
+                    ));
+                  });
             }),
         Align(
             alignment: Alignment.bottomCenter,
