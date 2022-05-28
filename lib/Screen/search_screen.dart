@@ -1,11 +1,14 @@
 import 'package:chatify/Screen/chat_screen.dart';
 import 'package:chatify/model/user_model.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
-  User? user;
+  UserModel? user;
+
+  SearchScreen({Key? key}) : super(key: key);
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -62,6 +65,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    autocorrect: false,
                     controller: searchController,
                     decoration: InputDecoration(
                         hintText: "schreibe den Namen",
@@ -74,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   onPressed: () {
                     onSearch();
                   },
-                  icon: Icon(Icons.search))
+                  icon: const Icon(Icons.search))
             ],
           ),
           if (searchResult.isNotEmpty)
@@ -102,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         friendImage: searchResult[index]
                                             ['image'])));
                           },
-                          icon: Icon(Icons.message)),
+                          icon: const Icon(Icons.message)),
                     );
                   }),
             )

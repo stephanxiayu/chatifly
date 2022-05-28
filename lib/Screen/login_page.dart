@@ -1,4 +1,3 @@
-import 'package:chatify/Screen/chat_screen.dart';
 import 'package:chatify/Screen/homescreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,16 +28,16 @@ class _LoginPageState extends State<LoginPage> {
         await FirebaseAuth.instance.signInWithCredential(credatial);
 
     DocumentSnapshot userExist =
-        await firestore.collection('users').doc(userCredential.user!.uid).get();
+        await firestore.collection('users').doc(userCredential.user?.uid).get();
 
     if (userExist.exists) {
       print('user already exist');
     } else {
-      await firestore.collection('users').doc(userCredential.user!.uid).set({
-        'email': userCredential.user!.email,
-        'name': userCredential.user!.displayName,
-        'image': userCredential.user!.photoURL,
-        'uid': userCredential.user!.uid,
+      await firestore.collection('users').doc(userCredential.user?.uid).set({
+        'email': userCredential.user?.email,
+        'name': userCredential.user?.displayName,
+        'image': userCredential.user?.photoURL,
+        'uid': userCredential.user?.uid,
         'date': DateTime.now()
       });
     }
