@@ -37,32 +37,35 @@ class ChatScreen extends StatelessWidget {
       ),
       body: Column(children: [
         Expanded(
-          child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(currentUser?.uid)
-                  .collection('messages')
-                  .doc(friendId)
-                  .collection('chats')
-                  .orderBy('date', descending: true)
-                  .snapshots(),
-              builder: (context, AsyncSnapshot snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: Text("ist loading...."));
-                }
-                return ListView.builder(
-                    itemCount: snapshot.data.docs.length,
-                    reverse: true,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      bool isMe = snapshot.data.docs[index]['senderId'] ==
-                          currentUser?.uid;
-                      return SingleMessages(
-                        isMe: isMe,
-                        message: snapshot.data.docs[index]['message'],
-                      );
-                    });
-              }),
+          child: Container(
+            padding: EdgeInsets.all(8),
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(currentUser?.uid)
+                    .collection('messages')
+                    .doc(friendId)
+                    .collection('chats')
+                    .orderBy('date', descending: true)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: Text("ist loading...."));
+                  }
+                  return ListView.builder(
+                      itemCount: snapshot.data.docs.length,
+                      reverse: true,
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        bool isMe = snapshot.data.docs[index]['senderId'] ==
+                            currentUser?.uid;
+                        return SingleMessages(
+                          isMe: isMe,
+                          message: snapshot.data.docs[index]['message'],
+                        );
+                      });
+                }),
+          ),
         ),
         MessageTextField(
           currentId: currentUser?.uid,

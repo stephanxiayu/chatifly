@@ -1,3 +1,4 @@
+import 'package:chatify/Screen/chat_screen.dart';
 import 'package:chatify/Screen/login_page.dart';
 import 'package:chatify/Screen/search_screen.dart';
 import 'package:chatify/model/user_model.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
                 var friendId = snapshot.data.docs[index].id;
-                var lastMsg = snapshot.data.docs[index]['last_message'];
+                var lastMsg = snapshot.data.docs[index]['last_msg'];
                 return FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('users')
@@ -58,17 +59,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         .get(),
                     builder: (context, AsyncSnapshot asyncSnapshot) {
                       if (asyncSnapshot.hasData) {
-                        print(asyncSnapshot.data);
                         var friend = asyncSnapshot.data;
                         return ListTile(
                           leading: CircleAvatar(
                             child: Image.network(friend['image']),
                           ),
                           title: Text(friend['name']),
-                          subtitle: Text(
-                            "$lastMsg",
-                            overflow: TextOverflow.clip,
+                          subtitle: Container(
+                            child: Text(
+                              "$lastMsg",
+                              overflow: TextOverflow.clip,
+                            ),
                           ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                        currentUser: widget.user,
+                                        friendId: friend['uid'],
+                                        friendname: friend['name'],
+                                        friendImage: friend['image'])));
+                          },
                         );
                       }
                       return const LinearProgressIndicator();
